@@ -136,7 +136,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Your farming guide at hand',
+                        'Your aeroponic guide at hand',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.8),
                           fontSize: 18,
