@@ -10,7 +10,44 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _textAnimation;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the controller and animations
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+
+    _textAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutExpo,
+    ));
+
+    _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    ));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,78 +68,91 @@ class _WelcomePageState extends State<WelcomePage> {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withOpacity(0.75),
-                      Colors.black.withOpacity(0.4),
-                      Colors.black.withOpacity(0.35),
-                      Colors.black.withOpacity(0.15),
-                      Colors.black.withOpacity(0.05),
+                      Colors.black.withOpacity(0.8),
+                      Colors.black.withOpacity(0.6),
+                      Colors.black.withOpacity(0.3),
+                      Colors.transparent,
                     ],
                   ),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Text.rich(
-                        TextSpan(
+                    const Spacer(),
+                    // Animated text for welcome message
+                    SlideTransition(
+                      position: _textAnimation,
+                      child: FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextSpan(
-                              text: 'Welcome to AeroDrought',
+                            Text(
+                              'Welcome to AeroDrought',
+                              textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleLarge
-                                  ?.apply(
-                                      fontWeightDelta: 50,
-                                      color: Colors.white,
-                                      fontSizeDelta: 10),
+                                  .headlineLarge
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.2,
+                                  ),
                             ),
-                            TextSpan(
-                              text: '\nYour farming guide at hand!',
+                            const SizedBox(height: 10),
+                            Text(
+                              'Your farming guide at hand!',
+                              textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
-                                  .titleMedium
-                                  ?.apply(
-                                      fontSizeDelta: 3,
-                                      fontWeightDelta: 0,
-                                      color: Colors.white),
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                    fontStyle: FontStyle.italic,
+                                  ),
                             ),
                           ],
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
-                    //  actions
-                    SizedBox(
-                      height: constraints.maxHeight * 0.1,
-                    ),
-                    OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
+                    const Spacer(flex: 2),
+                    // Get Started button with smooth animation
+                    FadeTransition(
+                      opacity: _opacityAnimation,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                            color: Colors.green,
+                            width: 2.5,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: constraints.maxHeight * 0.02,
+                            horizontal: constraints.maxWidth * 0.15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          elevation: 5,
+                          shadowColor: Colors.green,
+                        ),
+                        onPressed: () => Routes.go(Routes.home),
+                        icon: const Icon(
+                          Icons.arrow_forward_ios_outlined,
                           color: Colors.green,
-                          width: 3,
                         ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: constraints.maxHeight * 0.02,
-                          horizontal: constraints.maxHeight * 0.03,
+                        label: Text(
+                          'Get Started',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                         ),
-                      ),
-                      onPressed: () => Routes.go(Routes.home),
-                      label: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Colors.green,
-                      ),
-                      icon: Text(
-                        'Get Started',
-                        style: Theme.of(context).textTheme.bodyLarge?.apply(
-                              fontWeightDelta: 3,
-                              fontSizeDelta: 3,
-                              color: Colors.white,
-                            ),
                       ),
                     ),
-                    SizedBox(
-                      height: constraints.maxHeight * 0.2,
-                    ),
+                    const SizedBox(height: 60),
                   ],
                 ),
               ),

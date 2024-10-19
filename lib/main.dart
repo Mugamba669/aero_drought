@@ -42,7 +42,7 @@ void main() {
         ),
         useMaterial3: true,
       ),
-      initialRoute: Routes.index,
+      initialRoute: Routes.splash,
       routes: Routes.routes,
     ),
   );
