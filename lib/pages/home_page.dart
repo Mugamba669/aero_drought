@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aero_drought/pages/results_page.dart';
 import 'package:aero_drought/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,6 +71,14 @@ class _HomePageState extends State<HomePage> {
                                           setState(() {
                                             file = File(value!.path);
                                           });
+                                          if (file != null) {
+                                            // navigate to next page
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ResultsPage(image: file);
+                                            }));
+                                          }
                                         });
                                       },
                                       icon: const Icon(Icons.camera),
@@ -90,6 +99,12 @@ class _HomePageState extends State<HomePage> {
                                             setState(() {
                                               file = File(value.path);
                                             });
+                                            // navigate to next page
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return ResultsPage(image: file);
+                                            }));
                                           }
                                         });
                                       },
@@ -155,16 +170,26 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             if (file != null)
-              GestureDetector(
-                child: Image.file(
-                  file!,
-                  width: constraints.maxWidth * 0.8,
-                  height: constraints.maxWidth * 0.8,
-                  fit: BoxFit.cover,
+              Card(
+                margin: const EdgeInsets.all(15.0),
+                elevation: 6, // Add elevation for a shadow effect
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  side: const BorderSide(
+                    color: Colors.green,
+                    width: 1.3,
+                  ),
                 ),
-                onTap: () {
-                  Routes.go(Routes.results);
-                },
+                // borderRadius: BorderRadius.circular(15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.file(
+                    file!,
+                    width: constraints.maxWidth * 0.8,
+                    height: constraints.maxWidth * 0.8,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
           ],
         );

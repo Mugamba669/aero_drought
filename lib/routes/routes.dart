@@ -19,7 +19,7 @@ class Routes {
       splash: (context) => const SplashScreen(),
       index: (context) => const WelcomePage(),
       home: (context) => const HomePage(),
-      results: (context) => const ResultsPage(),
+      // results: (context) => const ResultsPage(),
       recommendation: (context) => const RecommendationsPage(),
     };
   }

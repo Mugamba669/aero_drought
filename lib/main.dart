@@ -16,8 +16,6 @@ void main() {
       systemNavigationBarIconBrightness: Brightness.dark,
       systemNavigationBarContrastEnforced: false,
       systemNavigationBarDividerColor: Colors.transparent,
-      // systemNavigationBarContrastEnforced: false,/s
-      // systemNavigationBarBrightness: Brightness.dark,
     ),
   );
   //

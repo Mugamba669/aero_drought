@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:aero_drought/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class ResultsPage extends StatelessWidget {
-  const ResultsPage({super.key});
+  final File? image;
+  const ResultsPage({super.key, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,8 @@ class ResultsPage extends StatelessWidget {
                 Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: Image.asset(
-                      'assets/launch.png',
+                    child: Image.file(
+                      image!,
                       width: constraints.maxWidth * 0.8,
                       height: constraints.maxWidth * 0.8,
                       fit: BoxFit.cover,
